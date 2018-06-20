@@ -1,0 +1,8 @@
+build-essential
+cmake
+git
+libsqlite3-dev
+libgnutls28-dev
+libgcrypt20-dev
+libpthread-stubs0-dev
+libsodium-dev

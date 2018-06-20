@@ -1,0 +1,50 @@
+{% load i18n %}
+{% extends dashboard.html %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{% if message %}
+<div class="row">
+    <div class="alert alert-info" style="width:100%">{{message}}</div>
+</div>
+{% endif %}
+{% if user.admin == "1" %}
+    <a href="admin"><h3>U bent admin. Klik hier om naar de admin sectie te gaan.</h3></a>
+{% endif %}
+<div class="row">
+        {% for flight in flights %}
+        <div class="card" style="width: 18rem; background-color: gray;">
+            <div class="card-body">
+                <h5 class="card-title">{{flight.flight_name}}</h5>
+                <p class="card-text">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td>Vliegveld vertrek</td>
+                        <td>{{flight.from}}</td>
+                    </tr>
+                    <tr>
+                        <td>Vliegveld aankomst</td>
+                        <td>{{flight.to}}</td>
+                    </tr>
+                    <tr>
+                        <td>Prijs</td>
+                        <td>{{flight.price}} miles</td>
+                    </tr>
+                    <tr>
+                        <td>Vertrekdatum</td>
+                        <td>{{flight.date}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </p>
+                <form action="index" method="post">
+                    <input type="hidden" name="buy" value="{{flight.id}}">
+                    <input type="hidden" name="_token" value="{{csrf}}">
+                    <button type="submit" class="btn btn-primary">Bestel</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+</div>
+<p>Wij doen niet aan restitutie.</p>
+{% endblock %}

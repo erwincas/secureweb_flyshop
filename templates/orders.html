@@ -1,0 +1,45 @@
+{% load i18n %}
+{% extends dashboard.html %}
+{% block title %} Mijn orders {% endblock %}
+{% block content %}
+{% if message %}
+<div class="row">
+    <div class="alert alert-success" style="width:100%">{{message}}</div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" style="background-color: gray;">
+            <div class="card-body">
+                <h5 class="card-title">Orders</h5>
+                <p class="card-text">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Vluchtnaam</th>
+                        <th>Van</th>
+                        <td>Naar</td>
+                        <td>Annuleer</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for flight in orders %}
+                    <tr>
+                        <form action="orders" method="POST">
+                            <input type="hidden" name="_token" value="{{csrf}}">
+                            <input type="hidden" name="flight_id" value="{{flight.id}}">
+                            <td>{{flight.flight_name}}</td>
+                            <td>{{flight.from}}</td>
+                            <td>{{flight.to}}</td>
+                            <td><button class="btn btn-info" type="submit"></button></td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

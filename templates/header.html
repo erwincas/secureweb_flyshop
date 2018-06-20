@@ -1,0 +1,23 @@
+{% load i18n %}
+<html lang="nl">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="css/bootstrap" />
+        {% block css %}
+
+        {% endblock %}
+    </head>
+    <body>
+    {% block body %}
+
+    {% endblock %}
+
+    <script src="js/jquery"></script>
+    <script src="js/bootstrap"></script>
+    {% block javascript %}
+
+    {% endblock %}
+    </body>
+</html>

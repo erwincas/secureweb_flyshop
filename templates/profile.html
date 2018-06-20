@@ -1,0 +1,16 @@
+{% load i18n %}
+{% extends dashboard.html %}
+{% block title %} Profiel {% endblock %}
+{% block content %}
+    <form method="POST" action="profile">
+        {% if message %}<div class="alert alert-success">{{message}}</div>{% endif %}
+        <div class="form-group">
+            <h2>Gebruiker: {{user.username}}</h2> <br>
+            <h3>Inholland miles: {{user.miles}}</h3><br>
+            <label for="password">Wachtwoord</label>
+            <input type="hidden" name="_token" value="{{csrf}}">
+            <input type="password" class="form-control" id="password" name="pwd" placeholder="Ongewijzigd">
+        </div>
+        <button type="submit" class="btn btn-primary">Verander</button>
+    </form>
+{% endblock %}

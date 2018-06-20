@@ -1,0 +1,51 @@
+{% load i18n %}
+{% extends dashboard.html %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{% if message %}
+<div class="row">
+    <div class="alert alert-success" style="width:100%">{{message}}</div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" style="background-color: gray;">
+            <div class="card-body">
+                <h5 class="card-title">Gebruikers</h5>
+                <p class="card-text">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Gebruikersnaam</th>
+                        <th>Inholland Miles</th>
+                        <td>Admin</td>
+                        <td>Wachtwoord</td>
+                        <td>Wijzig</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <form action="admin" method="POST">
+                            <input type="hidden" name="_token" value="{{csrf}}">
+                            <input type="hidden" name="username" value="{{user.username}}">
+                            <td>{{user.username}}</td>
+                            <td><input type="number" name="miles" value="{{user.miles}}"></td>
+                            {% if user.admin == "1" %}
+                            <td><input type="checkbox" name="admin" checked></td>
+                            {% else %}
+                            <td><input type="checkbox" name="admin"></td>
+                            {% endif %}
+                            <td><input type="password" name="password" placeholder="Ongewijzigd"> </td>
+                            <td><button class="btn btn-info" type="submit"></button></td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

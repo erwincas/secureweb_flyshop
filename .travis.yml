@@ -1,0 +1,45 @@
+language: c
+dist: trusty
+sudo: required
+before_script:
+- git clone https://github.com/davidmoreno/onion.git
+- cd onion
+- mkdir build && cd build
+- cmake ..
+- make
+- sudo make install
+- cd ../..
+- wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+- tar xvzf LATEST.tar.gz
+- cd libsodium-stable
+- ./configure
+- make && make check
+- sudo make install
+- sudo ldconfig
+- cd ..
+script:
+- sh buildtools/otemplate.sh
+- mkdir build
+- cd build
+- cmake .. -DCMAKE_C_FLAGS=\"-Werror\" -DCMAKE_CXX_FLAGS=\"-Werror\"
+- make VERBOSE=1 
+addons:
+    apt:
+      update: true
+      packages:
+        - build-essential
+        - cmake
+        - libsqlite3-dev
+        - libssl-dev
+        - libgnutls28-dev
+        - libgcrypt20-dev
+        - libsystemd-daemon-dev
+        - wget
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file: Secure_Programming
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
