@@ -28,7 +28,7 @@ int webserver() {
     signal(SIGINT, shutdown_server);
     signal(SIGTERM, shutdown_server);
 
-    o = onion_new(O_POLL);
+    o = onion_new(O_POOL);
     onion_set_certificate(o, O_SSL_CERTIFICATE_KEY, "../cert/localhost.crt", "../cert/localhost.key", O_SSL_NONE);
     onion_set_timeout(o, 5000);
     onion_set_hostname(o, "0.0.0.0");
