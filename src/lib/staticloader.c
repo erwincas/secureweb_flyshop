@@ -11,11 +11,11 @@ char * getStaticFile(char * filename){
 
     if (handler)
     {
-        // Seek the last byte of the file
+        // Seek the last byte of the file.
         fseek(handler, 0, SEEK_END);
-        // Offset from the first to the last byte, or in other words, filesize
+        // Offset from the first to the last byte, or in other words, filesize.
         string_size = ftell(handler);
-        // go back to the start of the file
+        // Go back to the start of the file.
         rewind(handler);
 
         // Allocate a string that can hold it all

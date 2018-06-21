@@ -1,14 +1,33 @@
 #include "../include/pages.h"
 #include "../include/csrf.h"
 
-
+/*
+ * Redirect to the login page after a user is logged in or the session is still set.
+ */
 onion_connection_status loginRedirect(void *p, onion_request *req, onion_response *res) {
     return onion_shortcut_redirect("index", req, res);
 }
 
+/*
+ * Redirect to the login page if there is no session available and the user isn't logged in.
+ */
 onion_connection_status guestRedirect(void *p, onion_request *req, onion_response *res) {
     return onion_shortcut_redirect("login", req, res);
 }
+
+/*
+ * Functionality for the login page.
+ * Gets called when the user lands on the login page or uses the login function.
+ *
+ * Create a dict, this is used to send data to the templating engine and render it on a page.
+ * Check if the user was already logged in, if so redirect to the homepage.
+ * If a login request to the server is captured check if the csrf token is valid.
+ * If so, retrieve the username and password, check if they are filled.
+ * Call the function to retrieve user data and check if the current input matches a row.
+ * If a row is found, create a session and log a user in.
+ *
+ * A CSRF token is generated if the user lands on the login page.
+ */
 
 void login_page(void *p, onion_request *req, onion_response *res) {
     onion_dict *dict = onion_dict_new();
@@ -33,6 +52,19 @@ void login_page(void *p, onion_request *req, onion_response *res) {
     generate_csrf_token(req, dict);
     return login_html(dict, res);
 }
+
+/*
+ * Functionality of the home page.
+ *
+ * Each time a request is captured retrieve the current user from the session.
+ * If no user is found, redirect to the login page.
+ *
+ * Create a new dictionary to render data on the web page.
+ * Check if the CSRF token is valid.
+ * If a user tries to buy a ticket, check if it has enough resources and if the flight still exists.
+ *
+ * If a buy request is not caught, render the webpage, show all the possible flights.
+ */
 
 void index_page(void *p, onion_request *req, onion_response *res) {
     onion_dict *user = getUser(req);
@@ -73,6 +105,15 @@ void index_page(void *p, onion_request *req, onion_response *res) {
     guestRedirect(p, req, res);
 }
 
+/*
+ * Personal orders page
+ *
+ * Check if a user is logged in, if not redirect to the login page.
+ * Retrieve the orders based on the user id.
+ * Verify the CSRF token
+ *
+ *
+ */
 void orders_page(void *p, onion_request *req, onion_response *res) {
     onion_dict *user = getUser(req);
     if (user) {

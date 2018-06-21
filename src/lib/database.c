@@ -6,6 +6,10 @@
 //Variable declaration
 char *zErrMsg = 0;
 
+/*
+ * Create a connection to the SQLITE3 database.
+ */
+
 char db_connect(void) {
     rc = sqlite3_open(DATABASE_NAME, &db);
 
@@ -16,9 +20,18 @@ char db_connect(void) {
     return 1;
 }
 
+/*
+ * Close a connection to the SQLITE3 database
+ */
+
 void db_close(void) {
     sqlite3_close(db);
 }
+
+/*
+ * Create the initial tables needed to make the application work.
+ * Connect to the database, send a few queries and close the connection again.
+ */
 
 void db_create_test_env(void) {
     db_connect();
@@ -38,6 +51,10 @@ void db_create_test_env(void) {
     db_close();
 }
 
+/*
+ * Check if database tables already exist, if not recreate them.
+ */
+
 int database(void) {
     if (access(DATABASE_NAME, F_OK) == -1) {
         // file doesn't exist, also create test tables
@@ -45,6 +62,14 @@ int database(void) {
     }
     return 0;
 }
+
+/*
+ * Check the user login.
+ * First initialise a connection to the database.
+ * Hash the user password, retrieve the stored one.
+ * Create a prepared statement, this is against SQL INJECTION, retrieve the result and check if a row is given back.
+ * If so check again if the row matches the given data.
+ */
 
 char checkLogin(char *user, char *password) {
     db_connect();
@@ -63,6 +88,12 @@ char checkLogin(char *user, char *password) {
     }
     return 0;
 }
+
+/*
+ * Retrieve the airmiles the current user has.
+ * Create a connection to the database, send a prepared statement and retrieve results.
+ * Close the database connection and return the miles a user has.
+ */
 
 int getMiles(char *user){
     db_connect();
@@ -122,6 +153,13 @@ char changeUser(char *user, char *password, char *miles, char *admin){
     return success;
 }
 
+/*
+ * Function used to easily cast an integer value to a string.
+ *
+ * Allocate enough data to encapsulate the integer value.
+ * Print to test if the cast went succesfully.
+ * Return the string.
+ */
 char * intToString(int number){
     char *string = malloc(sizeof(int) * 2);
     sprintf(string, "%d", number);
