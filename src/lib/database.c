@@ -2,7 +2,7 @@
 /**
  * File for all database functions within the project
  */
-//Dennis test
+
 //Variable declaration
 char *zErrMsg = 0;
 
@@ -109,6 +109,14 @@ int getMiles(char *user){
     return miles;
 }
 
+/*
+ * Change the password of a user.
+ * First initialise a connection to the database.
+ * Hash the user password.
+ * Create a prepared statement, this is against SQL INJECTION, update the password for the user.
+ * close the database.
+ */
+
 char changePassword(char *user, char *password){
     db_connect();
     char success = 0;
@@ -124,6 +132,15 @@ char changePassword(char *user, char *password){
     db_close();
     return success;
 }
+
+/*
+ * Connect to database.
+ * Check if the user is admin.
+ * Save the action of the admin.
+ * if the password is not zero or null the password can be updated.
+ * Create a prepared statement, this is against SQL INJECTION, update the users value.
+ * close the database.
+ */
 
 char changeUser(char *user, char *password, char *miles, char *admin){
     db_connect();
@@ -166,6 +183,10 @@ char * intToString(int number){
     return string;
 }
 
+/*
+ * Depricated
+ */
+
 int countTableRows(char *tablename){
     db_connect();
     char query[60];
@@ -179,6 +200,12 @@ int countTableRows(char *tablename){
     db_close();
     return count;
 }
+
+/*
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, insert a new user.
+ * close the database.
+ */
 
 char registerUser(char *user, char *password){
     char success = 0;
@@ -195,6 +222,13 @@ char registerUser(char *user, char *password){
     db_close();
     return success;
 }
+
+/*
+ * Gets all the flights for a user.
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, selects all flights for the user.
+ * close the database.
+ */ 
 
 onion_dict * getFlights(int user_id){
     db_connect();
@@ -219,6 +253,13 @@ onion_dict * getFlights(int user_id){
     return flights;
 }
 
+/*
+ * Gets the users information.
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, selects users information.
+ * close the database.
+ */ 
+
 onion_dict * getUserInfo(char * username){
     db_connect();
     onion_dict *user = onion_dict_new();
@@ -241,6 +282,13 @@ onion_dict * getUserInfo(char * username){
     return NULL;
 }
 
+/*
+ * Gets all the users.
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, selects all users.
+ * close the database.
+ */ 
+
 onion_dict * getUsers(){
     db_connect();
     onion_dict *users = onion_dict_new();
@@ -260,6 +308,13 @@ onion_dict * getUsers(){
     db_close();
     return users;
 }
+
+/*
+ * Gets all orders.
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, selects all orders for the user.
+ * close the database.
+ */ 
 
 onion_dict * getOrders(int user_id){
     db_connect();
@@ -283,6 +338,14 @@ onion_dict * getOrders(int user_id){
     db_close();
     return orders;
 }
+
+/*
+ * Buy a flight
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, selects the flight for the user.
+ * If there is no money or something went wrong a error code is generated.
+ * close the database.
+ */ 
 
 char buyFlight(onion_dict *user, int flight_id){
     db_connect();
@@ -338,6 +401,13 @@ char buyFlight(onion_dict *user, int flight_id){
     db_close();
     return code;
 }
+
+/*
+ * Deletes an order.
+ * Connect to database.
+ * Create a prepared statement, this is against SQL INJECTION, delete the order for the user.
+ * close the database.
+ */ 
 
 char deleteOrder(int user_id, int flight_id){
     db_connect();
