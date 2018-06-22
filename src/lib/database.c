@@ -2,7 +2,7 @@
 /**
  * File for all database functions within the project
  */
-
+//Dennis test
 //Variable declaration
 char *zErrMsg = 0;
 
