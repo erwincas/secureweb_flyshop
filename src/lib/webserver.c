@@ -8,7 +8,14 @@
 #include "../include/pages.h"
 #include "../include/staticloader.h"
 
+// Make an onion variable with global scope.
 onion *o = NULL;
+
+/*
+ * Retrieve the data from the post request.
+ * If the post is empty, write an empty response.
+ * Else return the post data.
+ */
 
 char *get_post_data(void *_, onion_request *req, onion_response *res, char *postName) {
     if (onion_request_get_flags(req) & OR_HEAD) {
@@ -19,10 +26,27 @@ char *get_post_data(void *_, onion_request *req, onion_response *res, char *post
     return data;
 }
 
+/*
+ * Stop the server, shutdown the thread.
+ */
 static void shutdown_server(int _) {
     if (o)
         onion_listen_stop(o);
 }
+
+/*
+ * Webserver initialisation.
+ *
+ * Initializes signals to stop the server when it crashes of gets interrupted.
+ * Create a new onion "object" that bootstraps the server
+ * Add the SSL CERTIFICATE for a safe connection.
+ *
+ * Run the server locally and create the routing for the different pages.
+ * Also include the javascript and stylesheets.
+ *
+ * In the end, free all memory allocated to the server.
+ * This way all mallocs will free their memory too.
+ */
 
 int webserver() {
     signal(SIGINT, shutdown_server);
